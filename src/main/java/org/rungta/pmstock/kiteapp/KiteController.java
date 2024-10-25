@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class KiteController {
 
+
+
     KiteConnect kiteSdk = new KiteConnect("your_apiKey");
 
 
@@ -28,6 +30,9 @@ public class KiteController {
         return "An error occurred, please try again later.";
     }
 
+
+
+    //Implement the methods for invoking an Kite API Request and saving the stock
 
 
     

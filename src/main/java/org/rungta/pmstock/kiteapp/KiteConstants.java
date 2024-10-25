@@ -19,4 +19,10 @@ public class KiteConstants {
     public static final String KITE_INSTRUMENTS = KITE_ROOT_URL + "/instruments";
 
 
+
+    //WEB SOCKET details
+    private static final int WEBSOCKET_MAX_INSTRUMENTS_SUPPORT_IN_A_WEBSOCKET = 3000;
+    private static final int WEBSOCKET_MAX_WEBSOCKET_CONNECTIONS = 3;
+
+
 }
