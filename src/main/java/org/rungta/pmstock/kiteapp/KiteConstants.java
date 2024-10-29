@@ -23,9 +23,14 @@ public class KiteConstants {
     //WEB SOCKET details
     private static final int WEBSOCKET_MAX_INSTRUMENTS_SUPPORT_IN_A_WEBSOCKET = 3000;
     private static final int WEBSOCKET_MAX_WEBSOCKET_CONNECTIONS = 3;
+    public static final int WEBSOCKET_MAX_RETRIES = 5;
+    public static final int WEBSOCKET_MAX_RETRY_INTERVAL = 10;
 
 
     //DDB Storage format
     public static final String TICK_STORAGE_TABLE_NAME_FORMAT = "Instrument_%s";    //Format for storing Tick data in DDB Tables in AWS Region. variable is replaced by InstrumentToken
+    public static final String DDB_MARKET_INSTRUMENTS = "MarketInstruments";
+
+
 
 }

@@ -9,6 +9,10 @@ import org.rungta.pmstock.kiteapp.util.TickStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.rungta.pmstock.kiteapp.KiteConstants.WEBSOCKET_MAX_RETRIES;
+import static org.rungta.pmstock.kiteapp.KiteConstants.WEBSOCKET_MAX_RETRY_INTERVAL;
 
 public class KiteWebSocketController {
 
@@ -48,7 +52,7 @@ public class KiteWebSocketController {
         kiteTicker.setOnConnectedListener(new OnConnect() {
             @Override
             public void onConnected() {
-                System.out.println("WebSocket connected");
+                logger.info("WebSocket connected");
             }
         });
 
@@ -56,7 +60,7 @@ public class KiteWebSocketController {
         kiteTicker.setOnDisconnectedListener(new OnDisconnect() {
             @Override
             public void onDisconnected() {
-                System.out.println("WebSocket disconnected");
+                logger.warn("WebSocket disconnected");
             }
         });
 
@@ -64,17 +68,21 @@ public class KiteWebSocketController {
         kiteTicker.setOnErrorListener(new OnError() {
             @Override
             public void onError(Exception exception) {
-                System.out.println("WebSocket error: " + exception.getMessage());
+                logger.error("WebSocket error1: {}", exception.getMessage());
             }
 
             @Override
             public void onError(KiteException exception) {
-                System.out.println("WebSocket error: " + exception.getMessage());
+                logger.error("WebSocket error2: {}", exception.getMessage());
             }
 
             @Override
             public void onError(String exceptionMessage) {
-                System.out.println("WebSocket error: " + exceptionMessage);
+                logger.error("WebSocket error3: {}", exceptionMessage);
+            }
+
+            public void onError(Throwable throwable) {
+                logger.error("Unexpected error: {}", throwable.getMessage());
             }
         });
 
@@ -82,21 +90,31 @@ public class KiteWebSocketController {
         kiteTicker.setOnOrderUpdateListener(new OnOrderUpdate() {
             @Override
             public void onOrderUpdate(Order order) {
-                System.out.println("Order update: " + order.orderId);
+                logger.error("Order update: {}", order.orderId);
             }
         });
 
         // Enable reconnection and set retry parameters if needed
         kiteTicker.setTryReconnection(true); // Enable auto-reconnect
         try {
-            kiteTicker.setMaximumRetries(5); // Set maximum retries
-            kiteTicker.setMaximumRetryInterval(10); // Set maximum retry interval in seconds
-        } catch (
-                KiteException e) {
-            System.out.println("Error setting retry parameters: " + e.getMessage());
+            kiteTicker.setMaximumRetries(WEBSOCKET_MAX_RETRIES); // Set maximum retries
+            kiteTicker.setMaximumRetryInterval(WEBSOCKET_MAX_RETRY_INTERVAL); // Set maximum retry interval in seconds
+        } catch (KiteException e) {
+            logger.error("Error setting retry parameters: {}", e.getMessage());
         }
 
-        // Connect to the WebSocket
+        //Subscribe for Nifty500 indices to listen to from the socket
+        ArrayList<Long> nifty500List = new ArrayList<>(List.of(123L, 21L));
+
+
+        // Subscribe to each instrument's ticker
+        if (nifty500List != null && !nifty500List.isEmpty()) {
+            kiteTicker.subscribe(nifty500List);
+            logger.info("Subscribing Websocket listener for below indices: {}", nifty500List);
+        } else {
+            logger.warn("Nifty500 list is null or empty, skipping subscription.");
+        }
+        // Connect to the WebSocket and start listening
         kiteTicker.connect();
     }
 }

@@ -22,7 +22,7 @@ public class KiteLoginService {
 
     private final String apiKey;
     private final String apiSecret;
-    private String accessToken;
+    private static String accessToken;
 
     public KiteLoginService(String apiKey, String apiSecret) {
         this.apiKey = apiKey;
@@ -30,7 +30,7 @@ public class KiteLoginService {
         this.accessToken = null;
     }
 
-    public String getAccessToken() {
+    public static String getAccessToken() {
         return accessToken;
     }
     public void setAccessToken(String accessToken) {

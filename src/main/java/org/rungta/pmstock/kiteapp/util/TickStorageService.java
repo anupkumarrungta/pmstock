@@ -31,7 +31,7 @@ public class TickStorageService {
 
         String tableName = String.format(TICK_STORAGE_TABLE_NAME_FORMAT, tick.getInstrumentToken());
         if (!DynamoDBService.checkTable(tableName)) {
-            logger.error("Table {} does not exist. Skipping the tick persistence action", tableName);
+            logger.error("Table'{}' does not exist for instrument token {}. Skipping the tick persistence action", tableName, tick.getInstrumentToken());
             return;
         }
         Map<String, AttributeValue> item = new HashMap<>();
@@ -45,7 +45,7 @@ public class TickStorageService {
         try {
             dynamoDbClient.putItem(request);
         } catch (DynamoDBMappingException e) {
-            logger.error("Failed to Store Tick in DynamoDB: {}", e.getMessage(), e);
+            logger.error("Failed to Store Tick in DynamoDB due to mapping error: {}", e.getMessage(), e);
         } catch (Exception e) {
             logger.error("Failed to Store Tick: {}", e.getMessage(), e);
         }
