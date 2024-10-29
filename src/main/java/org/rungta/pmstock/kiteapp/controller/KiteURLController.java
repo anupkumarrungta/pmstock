@@ -14,6 +14,7 @@ public class KiteURLController {
 
     public KiteURLController() {}
 
+    //Creates a GET request /instruments API https://kite.trade/docs/connect/v3/market-quotes/#instruments and saves the CSV output to DynamoDB table
     public void getAndPersistAllMarketInstruments() {
         String accessToken = KiteLoginService.getAccessToken();
         if(accessToken == null) {

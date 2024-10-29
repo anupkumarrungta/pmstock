@@ -16,10 +16,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.rungta.pmstock.kiteapp.KiteConstants;
 import org.rungta.pmstock.kiteapp.util.HttpRequestUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class KiteLoginService {
-
+    private static final Logger logger = LoggerFactory.getLogger(KiteLoginService.class);
     private final String apiKey;
     private final String apiSecret;
     private static String accessToken;
@@ -33,7 +35,7 @@ public class KiteLoginService {
     public static String getAccessToken() {
         return accessToken;
     }
-    public void setAccessToken(String accessToken) {
+    private void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
@@ -102,20 +104,9 @@ public class KiteLoginService {
     }
 /*
     public static void main(String[] args) {
-
-        String redirectParams = "some=X&more=Y"; // Optional
-        KiteLoginService kiteLoginService = new KiteLoginService(KiteConstants.apiKey, KiteConstants.apiSecret);
-
-        // Step 1: Get login URL and navigate to it in a web browser
-        String loginUrl = kiteLoginService.getLoginUrl(redirectParams);
-        System.out.println("Navigate to: " + loginUrl);
-
         // Step 2: After successful login, you'll get a request_token
         // Manually navigate and obtain request_token, then proceed to get access_token:
         try {
-            String requestToken = "obtained_request_token";
-            String accessToken = kiteLoginService.generateAccessToken(requestToken);
-            System.out.println("Access Token: " + accessToken);
 
             // Example authenticated request
             String url = "https://api.kite.trade/user/profile";
@@ -125,5 +116,6 @@ public class KiteLoginService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+     }*/
+
 }
