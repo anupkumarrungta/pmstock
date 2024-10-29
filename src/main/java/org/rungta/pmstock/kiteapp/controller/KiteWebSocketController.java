@@ -1,22 +1,19 @@
 package org.rungta.pmstock.kiteapp.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.Tick;
 import com.zerodhatech.ticker.*;
 import com.zerodhatech.models.Order;
-
-
-import com.zerodhatech.models.Tick;
+import org.rungta.pmstock.kiteapp.util.TickStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class KiteWebSocketController {
 
     private static final Logger logger = LoggerFactory.getLogger(KiteWebSocketController.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public void connect(String accessToken, String apiKey) {
 
@@ -31,8 +28,12 @@ public class KiteWebSocketController {
                     for (Tick tick : ticks) {
                         if (tick != null) {
                             logger.info("Tick received for token: {}", tick.getInstrumentToken());
-                            logger.info("Last traded price: {}", tick.getLastTradedPrice());
-                            logger.info("Tick Object: {}", tick.toString());
+                            try {
+                                // Assuming the message is in JSON format and can be deserialized into a Tick object.
+                                TickStorageService.storeTick(tick);  // Registering the storeTick function as a callback
+                            } catch (Exception e) {
+                                logger.error("Failed to process incoming message - storeTick: {}", e.getMessage());
+                            }
                         } else {
                             logger.warn("Received a null tick.");
                         }

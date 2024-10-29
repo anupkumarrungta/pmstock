@@ -25,4 +25,7 @@ public class KiteConstants {
     private static final int WEBSOCKET_MAX_WEBSOCKET_CONNECTIONS = 3;
 
 
+    //DDB Storage format
+    public static final String TICK_STORAGE_TABLE_NAME_FORMAT = "Instrument_%s";    //Format for storing Tick data in DDB Tables in AWS Region. variable is replaced by InstrumentToken
+
 }
